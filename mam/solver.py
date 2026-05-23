@@ -258,11 +258,11 @@ def MAM(b, M_dist=False, exact=False,
 
 
         #### Keep Track ###
-        if rank==0 and iterations_k%evry_it != 0:
-            print(f'{iterations_k}: computed in {iteration_time}s; (?)stopping criteria={evol_p}')
-            sys.stdout.flush()
         # Save datas
         if keep_track and iterations_k%evry_it == 0:
+            if rank==0 and iterations_k%evry_it != 0:
+                print(f'{iterations_k}: computed in {iteration_time}s; (?)stopping criteria={evol_p}')
+                sys.stdout.flush()
             # show avancement of the barycenter
             if rank == 0:
                 if visualize:
@@ -342,6 +342,8 @@ def MAM(b, M_dist=False, exact=False,
     # Pi_tot = comm.bcast(Pi_tot, root=0)
 
     # Output
+    if not keep_track:
+        P, Time, Wdist, l_precisionB, Precision, Iterations = None, None, None, None, None, None
     return (p, P, Time, Wdist, l_precisionB, Precision, Iterations, total_time, iterations_k)  #Pi_tot
 
 
